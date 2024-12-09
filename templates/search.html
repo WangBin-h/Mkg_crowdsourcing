@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>知识搜索</title>
+</head>
+<body>
+    <h1>知识搜索</h1>
+    <form method="GET" action="/search">
+        <input type="text" name="keyword" placeholder="输入关键词" required>
+        <button type="submit">搜索</button>
+    </form>
+    {% if results %}
+    <h2>搜索结果：</h2>
+    <ul>
+        {% for result in results %}
+        <li>{{ result }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+</html>

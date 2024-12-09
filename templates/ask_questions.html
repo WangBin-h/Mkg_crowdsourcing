@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>提问</title>
+</head>
+<body>
+    <h1>提问</h1>
+    <form method="POST" action="/ask">
+        <label for="title">问题标题：</label>
+        <input type="text" name="title" required>
+        <label for="description">问题描述：</label>
+        <textarea name="description" rows="5" required></textarea>
+        <button type="submit">提交问题</button>
+    </form>
+</body>
+</html>
