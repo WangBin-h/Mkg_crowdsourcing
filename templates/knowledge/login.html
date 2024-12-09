@@ -47,6 +47,13 @@
                         <div class="form-group">
                             <input class="form-control" type="password" placeholder="密码" required="required" name="password">
                         </div>
+                        <div class="form-group">
+                            <label for="user_type">选择用户类型</label>
+                            <select class="form-control" id="user_type" name="user_type">
+                                <option value="inquirer">提问者</option>
+                                <option value="expert">专家</option>
+                            </select>
+                        </div>
                         <button class="btn btn-lg btn-register-r">注册</button>
                 </form>
                 </div>
@@ -97,5 +104,35 @@
         </div>
     </div>
 </body>
+<script type="text/javascript">
+    // 检查 success 变量是否存在并为 True
+    {% if success %}
+    alert('注册成功！');
+    {% endif %}
+
+    // 检查 exists 变量是否存在并为 True
+    {% if exists %}
+    alert('账号已存在，注册失败！');
+    {% endif %}
+
+    // 控制显示注册还是登录页面
+    window.onload = function() {
+
+        {% if login_failed %}
+        document.getElementById('login').classList.add('is-show');
+        document.getElementById('register').classList.remove('is-show');
+        {% endif %}
+
+        {% if show_register %}
+        document.getElementById('register').classList.add('is-show');
+        document.getElementById('login').classList.remove('is-show');
+        {% elif show_login %}
+        document.getElementById('login').classList.add('is-show');
+        document.getElementById('register').classList.remove('is-show');
+        {% else %}
+        document.getElementById('welcome').classList.add('is-show');
+        {% endif %}
+    };
+</script>
 <script src="/static/js/xm.js"></script>
 </html>

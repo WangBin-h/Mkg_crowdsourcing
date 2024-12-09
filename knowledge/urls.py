@@ -6,5 +6,7 @@ from .views import register
 urlpatterns = [
     path('login/', views.login_in, name='login_in'),
     path('register/', register, name='register'),
+    path('expert_dashboard/', views.expert_dashboard, name='expert_dashboard'),
+    path('inquirer_dashboard/', views.inquirer_dashboard, name='inquirer_dashboard'),
 ]
 

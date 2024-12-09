@@ -24,5 +24,5 @@ class expert(models.Model):
     max_tasks = models.IntegerField(default=3)
     skill_level = models.IntegerField(default=1)
     arrive_time = models.DateTimeField(default=timezone.now)
-    leave_time = models.DateTimeField(default=timezone.now + timezone.timedelta(days=1))
+    leave_time = models.DateTimeField(default=timezone.timedelta(days=1))
     credibility = models.CharField(max_length=100, default=0.5)
