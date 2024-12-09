@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}医疗机构详情{% endblock %}
+
+{% block content %}
+<h2>{{ data.name }}</h2>
+<p>类别：{{ data.category }}</p>
+<p>级别：{{ data.level }}</p>
+<p>地址：{{ data.address }}</p>
+<p>电话：{{ data.phone }}</p>
+<a href="/knowledge/orgs/">返回列表</a>
+{% endblock %}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>数据统计</title>
+</head>
+<body>
+    <h1>平台统计数据</h1>
+    <canvas id="questionChart" width="400" height="200"></canvas>
+    <script>
+        const ctx = document.getElementById('questionChart').getContext('2d');
+        const questionChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ labels | safe }},
+                datasets: [{
+                    label: '问题数量',
+                    data: {{ data | safe }},
+                    borderWidth: 1
+                }]
+            }
+        });
+    </script>
+</body>
+</html>

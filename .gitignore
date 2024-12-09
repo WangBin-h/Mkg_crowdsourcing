@@ -1,0 +1,6 @@
+knowledge/__pycache__/*.pyc
+knowledge/migrations/__pycache__/*.pyc
+Mkg_crowdsourcing/__pycache__/*.pyc
+static/css/fontawesome.min.css
+static/css/jquery.datetimepicker.min.css
+static/css/accounting.css

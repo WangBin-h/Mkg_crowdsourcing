@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}医疗机构类别列表{% endblock %}
+
+{% block content %}
+<h2>医疗机构类别</h2>
+<ul>
+    {% for category in categories %}
+    <li><a href="/knowledge/orgs/category/{{ category }}">{{ category }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
