@@ -7,6 +7,13 @@ class NormalUser(models.Model): #用户名称
         return self.name
 
 class asker(models.Model):
+    owner = models.ForeignKey(NormalUser, on_delete=models.SET_NULL, null=True)
 	
 class expert(models.Model):
-    
+    owner = models.ForeignKey(NormalUser, on_delete=models.SET_NULL, null=True)
+    expert_id = models.CharField(max_length=100)
+    max_tasks = models.IntegerField(default=3)
+    skill_level = models.IntegerField(default=1)
+    arrive_time = models.DateTimeField(default=timezone.now)
+    leave_time = models.DateTimeField(default=timezone.now + timezone.timedelta(days=1))
+    credibility = models.CharField(max_length=100, default=0.5)

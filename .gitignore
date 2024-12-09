@@ -4,3 +4,5 @@ Mkg_crowdsourcing/__pycache__/*.pyc
 static/css/fontawesome.min.css
 static/css/jquery.datetimepicker.min.css
 static/css/accounting.css
+experts.json
+tasks.json
