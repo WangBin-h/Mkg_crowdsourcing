@@ -8,31 +8,38 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
 
 def register(request):
-    if request.method == 'GET':
-        return render(request, 'basic/register.html')
-
-    elif request.method == 'POST':
+    if request.method == 'POST':
         user_name = request.POST.get('username', '')
         email = request.POST.get('email', '')
         pwd = request.POST.get('password', '')
+        user_type = request.POST.get('user_type', 'inquirer')  # 获取用户类型，默认为提问者
 
-        if User.objects.filter(username=user_name).exists():
-            # 用户已存在，返回注册页面并显示提示
-            return render(request, 'accounting/login.html', {'exists': True, 'show_register': True})
-
-        nor_user = NormalUser(name=user_name)
-        nor_user.save()
+        # 创建 User 实例
         user = User.objects.create_user(username=user_name, password=pwd, email=email)
         user.save()
 
-        # 注册成功，返回登录页面并显示提示
+        # 创建 NormalUser 实例
+        normal_user = NormalUser(name=user_name, user_type=user_type)
+        normal_user.save()
+
+        # 创建 Asker 或 Expert 实例
+        if user_type == 'inquirer':
+            asker.objects.create(owner=normal_user)
+        elif user_type == 'expert':
+            expert.objects.create(owner=normal_user)
+
         return render(request, 'knowledge/login.html', {'success': True, 'show_login': True})
 
-    return JsonResponse({'code': 403, 'msg': '被禁止的请求'})
-
+    return render(request, 'basic/register.html')
 
 def login(request):
     return  render(request, 'knowledge/login.html')
+
+def expert_dashboard(request):
+    return render(request, 'expert_dashboard.html')  # 专家专属页面
+
+def inquirer_dashboard(request):
+    return render(request, 'inquirer_dashboard.html')  # 提问者专属页面
 
 def login_in(request):
     if request.method == 'GET':
@@ -47,14 +54,20 @@ def login_in(request):
         if user:
             if user.is_active:
                 auth_login(request, user)
-                return redirect('/knowledge/')
+
+                # 获取对应的 NormalUser 实例
+                normal_user = NormalUser.objects.get(name=user_name)
+
+                # 根据用户类型跳转到不同的页面
+                if normal_user.user_type == 'expert':
+                    return redirect('/expert_dashboard/')  # 跳转到专家页面
+                elif normal_user.user_type == 'inquirer':
+                    return redirect('/inquirer_dashboard/')  # 跳转到提问者页面
             else:
                 return render(request, 'knowledge/login.html', {'login_failed': True, 'msg': '用户未激活'})
         else:
-            # 设置错误消息，并返回登录页面
             return render(request, 'knowledge/login.html', {'login_failed': True, 'msg': '账户名或密码错误，请重新登录'})
 
-    # 处理其他请求方法
     return JsonResponse({'code': 405, 'msg': '方法不允许'}, status=405)
 
 
