@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+
+from knowledge.models import NormalUser, asker, expert
 from .redis_utils import get_medical_org_by_id, get_medical_orgs_by_category, get_graph_data
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, logout
 
 def register(request):
     if request.method == 'POST':
@@ -70,6 +73,9 @@ def login_in(request):
 
     return JsonResponse({'code': 405, 'msg': '方法不允许'}, status=405)
 
+def logout_(request):
+	logout(request)
+	return redirect('/accounting/login')
 
 def medical_org_detail(request, org_id):
     """
