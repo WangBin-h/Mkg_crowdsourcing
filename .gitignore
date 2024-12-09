@@ -6,3 +6,4 @@ static/css/jquery.datetimepicker.min.css
 static/css/accounting.css
 experts.json
 tasks.json
+db.sqlite3
