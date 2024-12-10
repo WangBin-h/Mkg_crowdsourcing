@@ -36,6 +36,13 @@
                     </p>
 
                     <p>或者使用您的电子邮箱进行注册</p>
+                    <!-- 显示错误信息 -->
+                    {% if error %}
+                    <div class="error-message">
+                        <span class="icon">⚠️</span>{{ msg }}
+                    </div>
+                    {% endif %}
+
                     <form method="POST" action="{% url 'register' %}">
                         {% csrf_token %}
                         <div class="form-group">
@@ -121,6 +128,11 @@
         {% if login_failed %}
         document.getElementById('login').classList.add('is-show');
         document.getElementById('register').classList.remove('is-show');
+        {% endif %}
+
+        {% if error %}
+        document.getElementById('register').classList.add('is-show');
+        document.getElementById('login').classList.remove('is-show');
         {% endif %}
 
         {% if show_register %}

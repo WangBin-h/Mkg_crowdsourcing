@@ -16,6 +16,11 @@ def register(request):
         email = request.POST.get('email', '')
         pwd = request.POST.get('password', '')
         user_type = request.POST.get('user_type', 'inquirer')  # 获取用户类型，默认为提问者
+        
+        # 检查用户名是否已存在
+        if User.objects.filter(username=user_name).exists():
+            # 如果用户名已经存在，返回注册页面并显示错误信息
+            return render(request, 'knowledge/login.html', {'error': True, 'msg': '重复的用户名'})
 
         # 创建 User 实例
         user = User.objects.create_user(username=user_name, password=pwd, email=email)
