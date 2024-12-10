@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 
-from knowledge.models import NormalUser, asker, expert
+from knowledge.models import NormalUser, Asker, Expert, Question
 from .redis_utils import get_medical_org_by_id, get_medical_orgs_by_category, get_graph_data
 from django.shortcuts import render
 from django.shortcuts import render, redirect
@@ -32,9 +32,9 @@ def register(request):
 
         # 创建 Asker 或 Expert 实例
         if user_type == 'inquirer':
-            asker.objects.create(owner=normal_user)
+            Asker.objects.create(owner=normal_user)
         elif user_type == 'expert':
-            expert.objects.create(owner=normal_user)
+            Expert.objects.create(owner=normal_user)
 
         return render(request, 'knowledge/login.html', {'success': True, 'show_login': True})
 
@@ -44,10 +44,45 @@ def login(request):
     return  render(request, 'knowledge/login.html')
 
 def expert_dashboard(request):
-    return render(request, 'knowledge/expert_dashboard.html')  # 专家专属页面
+    if request.user.is_authenticated:
+        normal_user = request.user
+        # 获取当前登录用户的专家信息
+        ownername = NormalUser.objects.get(name=normal_user)
+        expert = Expert.objects.get(owner=ownername)
+
+        context = {
+            'expert': expert,  # 将专家信息传递到模板
+        }
+        return render(request, 'knowledge/expert_dashboard.html', context)  # 专家专属页面
 
 def inquirer_dashboard(request):
-    return render(request, 'knowledge/inquirer_dashboard.html')  # 提问者专属页面
+    if request.user.is_authenticated:
+        normal_user = request.user
+        ownername = NormalUser.objects.get(name=normal_user)
+        asker = Asker.objects.get(owner=ownername)
+        questions = Question.objects.filter(asked_by=asker)
+        
+        # 处理表单提交
+        if request.method == 'POST':
+            title = request.POST.get('title')
+            content = request.POST.get('content')
+
+            # 创建新的问题
+            new_question = Question.objects.create(
+                title=title,
+                content=content,
+                asked_by=asker,
+                answered=False
+            )
+
+            # 重定向到当前页面，确保新问题显示
+            return redirect('inquirer_dashboard')
+        
+        context = {
+            'asker': asker,
+            'questions': questions,
+        }
+    return render(request, 'knowledge/inquirer_dashboard.html', context)  # 提问者专属页面
 
 def login_in(request):
     if request.method == 'GET':
@@ -87,14 +122,14 @@ def submit_answer(request):
         answer_text = request.POST.get('answer')
         question_id = request.POST.get('question_id')
         
-        question = Question.objects.get(id=question_id)
+        # question = Question.objects.get(id=question_id)
 
         # 创建并保存答案
-        answer = Answer.objects.create(question=question, expert=request.user.expert, text=answer_text)
+        # answer = Answer.objects.create(question=question, expert=request.user.expert, text=answer_text)
 
         # 更新问题状态
-        question.status = 'answered'
-        question.save()
+        # question.status = 'answered'
+        # question.save()
 
         return redirect('expert_dashboard')  # 跳转到专家页面
     
