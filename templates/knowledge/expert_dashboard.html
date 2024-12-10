@@ -8,50 +8,57 @@
         <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
         <link href="/static/css/accounting.css" rel="stylesheet">
+		<link href="/static/css/expert.css" rel="stylesheet">
 </head>
 <body>  
 	<div class="container">
 		<!-- 专家信息和可信度 -->
-		<div class="row">
+		<div class="card top-card">
 			<div class="col-md-4">
-				<h3>专家信息</h3>
-				<p><strong>可信度:</strong> {{ expert.reliability }}</p>
+				<h6>专家信息</h6>
+				<a> 可信度:  {{ expert.credibility }}</a>
+				<a> 专家id:  {{ expert.expert_id }}</a>
+				<a> skill_level: {{ expert.skill_level }}</a>
+				<a> max_tasks: {{ expert.max_tasks }}</a>
 			</div>
 		</div>
-	
+		<p>
 		<!-- 待回答问题列表 -->
-		<div class="row">
+		<div class="row ">
 			<div class="col-md-4">
-				<h3>待回答问题</h3>
-				<ul class="list-group">
-					{% for question in pending_questions %}
-						<li class="list-group-item" data-id="{{ question.id }}" onclick="loadQuestionDetails({{ question.id }})">
-							{{ question.title }}
-						</li>
-					{% endfor %}
-				</ul>
+				<div class="card left-card-1">
+				<h5>待回答问题</h5>
+					<ul class="list-group">
+						{% for question in pending_questions %}
+							<li class="list-group-item" data-id="{{ question.id }}" onclick="loadQuestionDetails({{ question.id }})">
+								{{ question.title }}
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
 			</div>
 	
 			<!-- 问题信息框和回答框 -->
 			<div class="col-md-8">
-				<h3>问题详情</h3>
-				<div id="question-details">
-					<p><strong>问题标题:</strong> {{ question.title }}</p>
-					<p><strong>问题描述:</strong> {{ question.description }}</p>
-				</div>
-	
-				<!-- 回答框 -->
-				<div id="answer-section">
-					<h4>回答问题</h4>
-					<form method="POST" action="{% url 'submit_answer' %}">
-						{% csrf_token %}
-						<textarea name="answer" class="form-control" rows="5" placeholder="请输入您的答案" required></textarea>
-						<button type="submit" class="btn btn-primary mt-2">提交答案</button>
-					</form>
+				<div class="card right-card-1">
+					<h5>问题详情</h5>
+					<div id="question-details">
+						<p> 问题标题:  {{ question.title }}</p>
+						<p> 问题描述:  {{ question.description }}</p>
+					</div>
+		
+					<!-- 回答框 -->
+					<div id="answer-section">
+						<h6>回答问题</h6>
+						<form method="POST" action="{% url 'submit_answer' %}">
+							{% csrf_token %}
+							<textarea name="answer" class="form-control" rows="5" placeholder="请输入您的答案" required></textarea>
+							<button type="submit" class="btn btn-primary mt-2">提交答案</button>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
 </body>
 </html>

@@ -1,0 +1,83 @@
+.top-card {
+    background: rgba(255, 255, 255, 0.4); /* 白色背景，带有透明度 */
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px); /* 毛玻璃效果，数值越大模糊度越高 */
+    -webkit-backdrop-filter: blur(10px); /* Safari 支持 */
+    transition: transform 0.35s ease-in-out, box-shadow 0.35s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+    will-change: transform; /* 优化渲染 */
+    backface-visibility: hidden; /* 处理模糊问题 */
+    max-height: 500px;
+}
+
+.top-card {
+    background: rgba(255, 255, 255, 0.4); /* 白色背景，带有透明度 */
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px); /* 毛玻璃效果，数值越大模糊度越高 */
+    -webkit-backdrop-filter: blur(10px); /* Safari 支持 */
+    transition: transform 0.35s ease-in-out, box-shadow 0.35s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+    will-change: transform; /* 优化渲染 */
+    backface-visibility: hidden; /* 处理模糊问题 */
+    max-height: 500px;
+}
+
+.left-card-1 {
+    background: rgba(255, 255, 255, 0.4); /* 白色背景，带有透明度 */
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px); /* 毛玻璃效果，数值越大模糊度越高 */
+    -webkit-backdrop-filter: blur(10px); /* Safari 支持 */
+    transition: transform 0.35s ease-in-out, box-shadow 0.35s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+    will-change: transform; /* 优化渲染 */
+    backface-visibility: hidden; /* 处理模糊问题 */
+    max-height: 500px;
+}
+
+.left-card-1 {
+    background: rgba(255, 255, 255, 0.4); /* 白色背景，带有透明度 */
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px); /* 毛玻璃效果，数值越大模糊度越高 */
+    -webkit-backdrop-filter: blur(10px); /* Safari 支持 */
+    transition: transform 0.35s ease-in-out, box-shadow 0.35s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+    will-change: transform; /* 优化渲染 */
+    backface-visibility: hidden; /* 处理模糊问题 */
+    max-height: 500px;
+}
+
+.right-card-1 {
+    background: rgba(255, 255, 255, 0.4); /* 白色背景，带有透明度 */
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px); /* 毛玻璃效果，数值越大模糊度越高 */
+    -webkit-backdrop-filter: blur(10px); /* Safari 支持 */
+    transition: transform 0.35s ease-in-out, box-shadow 0.35s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+    will-change: transform; /* 优化渲染 */
+    backface-visibility: hidden; /* 处理模糊问题 */
+    max-height: 500px;
+}
+
+.right-card-1 {
+    background: rgba(255, 255, 255, 0.4); /* 白色背景，带有透明度 */
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px); /* 毛玻璃效果，数值越大模糊度越高 */
+    -webkit-backdrop-filter: blur(10px); /* Safari 支持 */
+    transition: transform 0.35s ease-in-out, box-shadow 0.35s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+    will-change: transform; /* 优化渲染 */
+    backface-visibility: hidden; /* 处理模糊问题 */
+    max-height: 500px;
+}
