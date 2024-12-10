@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <title>专家 | 医疗知识图谱平台</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link href="/static/css/accounting.css" rel="stylesheet">
+</head>
+<body>  
+	<div class="container">
+		<!-- 专家信息和可信度 -->
+		<div class="row">
+			<div class="col-md-4">
+				<h3>专家信息</h3>
+				<p><strong>可信度:</strong> {{ expert.reliability }}</p>
+			</div>
+		</div>
+	
+		<!-- 待回答问题列表 -->
+		<div class="row">
+			<div class="col-md-4">
+				<h3>待回答问题</h3>
+				<ul class="list-group">
+					{% for question in pending_questions %}
+						<li class="list-group-item" data-id="{{ question.id }}" onclick="loadQuestionDetails({{ question.id }})">
+							{{ question.title }}
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+	
+			<!-- 问题信息框和回答框 -->
+			<div class="col-md-8">
+				<h3>问题详情</h3>
+				<div id="question-details">
+					<p><strong>问题标题:</strong> {{ question.title }}</p>
+					<p><strong>问题描述:</strong> {{ question.description }}</p>
+				</div>
+	
+				<!-- 回答框 -->
+				<div id="answer-section">
+					<h4>回答问题</h4>
+					<form method="POST" action="{% url 'submit_answer' %}">
+						{% csrf_token %}
+						<textarea name="answer" class="form-control" rows="5" placeholder="请输入您的答案" required></textarea>
+						<button type="submit" class="btn btn-primary mt-2">提交答案</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

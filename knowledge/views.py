@@ -44,10 +44,10 @@ def login(request):
     return  render(request, 'knowledge/login.html')
 
 def expert_dashboard(request):
-    return render(request, 'expert_dashboard.html')  # 专家专属页面
+    return render(request, 'knowledge/expert_dashboard.html')  # 专家专属页面
 
 def inquirer_dashboard(request):
-    return render(request, 'inquirer_dashboard.html')  # 提问者专属页面
+    return render(request, 'knowledge/inquirer_dashboard.html')  # 提问者专属页面
 
 def login_in(request):
     if request.method == 'GET':
@@ -68,9 +68,9 @@ def login_in(request):
 
                 # 根据用户类型跳转到不同的页面
                 if normal_user.user_type == 'expert':
-                    return redirect('/expert_dashboard/')  # 跳转到专家页面
+                    return redirect('../expert_dashboard/')  # 跳转到专家页面
                 elif normal_user.user_type == 'inquirer':
-                    return redirect('/inquirer_dashboard/')  # 跳转到提问者页面
+                    return redirect('../inquirer_dashboard/')  # 跳转到提问者页面
             else:
                 return render(request, 'knowledge/login.html', {'login_failed': True, 'msg': '用户未激活'})
         else:
@@ -82,6 +82,23 @@ def logout_(request):
 	logout(request)
 	return redirect('/accounting/login')
 
+def submit_answer(request):
+    if request.method == 'POST':
+        answer_text = request.POST.get('answer')
+        question_id = request.POST.get('question_id')
+        
+        question = Question.objects.get(id=question_id)
+
+        # 创建并保存答案
+        answer = Answer.objects.create(question=question, expert=request.user.expert, text=answer_text)
+
+        # 更新问题状态
+        question.status = 'answered'
+        question.save()
+
+        return redirect('expert_dashboard')  # 跳转到专家页面
+    
+    
 def medical_org_detail(request, org_id):
     """
     获取单个医疗机构详情
