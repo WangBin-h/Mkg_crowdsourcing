@@ -3,5 +3,5 @@ from .models import *
 
 # Register your models here.
 admin.site.register(NormalUser)
-admin.site.register(asker)
-admin.site.register(expert)
+admin.site.register(Asker)
+admin.site.register(Expert)
