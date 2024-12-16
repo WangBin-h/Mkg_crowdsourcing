@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'knowledge',  # Add your app here
+	# 'knowledge',  # Add your app here
+    'knowledge.apps.KnowledgeConfig',
 ]
 
 MIDDLEWARE = [
