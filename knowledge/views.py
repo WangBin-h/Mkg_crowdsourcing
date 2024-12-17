@@ -178,3 +178,29 @@ def category_list(request):
     """
     categories = ["医院", "诊所", "药店"]  # 假设类别是静态的或从 Redis 中获取
     return render(request, "category_list.html", {"categories": categories})
+
+
+
+
+
+
+
+
+from django.shortcuts import render
+from django.http import JsonResponse
+import json
+
+def questionare(request):
+    # 这里指定了本地路径的JSON文件。如果你打算部署到生产环境，可能需要将其存放在一个静态文件夹中并使用静态文件处理方式。
+    questions_path = 'C:/Users/86131/Desktop/question.json'
+
+    # 如果你有很多问题或需要更灵活的文件路径，可以考虑通过读取文件的方式来获取JSON数据
+    try:
+        with open(questions_path, 'r', encoding='utf-8') as file:
+            questions = json.load(file)
+    except Exception as e:
+        # 如果文件加载失败，返回一个错误页面或提示
+        return JsonResponse({'error': str(e)}, status=500)
+
+    # 返回渲染的页面，传递问题数据
+    return render(request, 'questionare.html', {'questions': questions})

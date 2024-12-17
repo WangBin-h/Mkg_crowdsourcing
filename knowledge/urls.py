@@ -9,5 +9,6 @@ urlpatterns = [
     path('expert_dashboard/', views.expert_dashboard, name='expert_dashboard'),
     path('submit_answer/', views.submit_answer, name='submit_answer'),  # 提交答案
     path('inquirer_dashboard/', views.inquirer_dashboard, name='inquirer_dashboard'),
+    path('questionare/', views.questionare, name='questionare'),
 ]
 
