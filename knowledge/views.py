@@ -180,15 +180,49 @@ def category_list(request):
     return render(request, "category_list.html", {"categories": categories})
 
 
-
-
-
-
-
+from django.shortcuts import render, redirect
 import json
 import random
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
+
+
+def em_algorithm(questions, user_answers, max_iter=10, tolerance=1e-4):
+
+    # 初始化可信度
+    theta = 0.5  # 初始可信度，假设为0.5
+
+    def e_step(questions, user_answers, theta):
+
+        probabilities = []
+        for i, question in enumerate(questions):
+            correct_answer = question['answer']
+            user_answer = user_answers[i]
+
+            # 假设用户答对问题的概率是 theta
+            # 如果用户的答案与正确答案匹配，则认为用户答对问题
+            correct = 1 if user_answer == correct_answer else 0
+            probabilities.append(correct * theta + (1 - correct) * (1 - theta))
+
+        return probabilities
+
+    def m_step(probabilities, user_answers):
+
+        correct_count = sum(
+            probabilities[i] * (1 if user_answers[i] == questions[i]['answer'] else 0) for i in range(len(questions)))
+        theta = correct_count / len(questions)
+        return theta
+
+    # 迭代执行E步和M步
+    for iteration in range(max_iter):
+        probabilities = e_step(questions, user_answers, theta)
+        new_theta = m_step(probabilities, user_answers)
+
+        # 检查收敛
+        if abs(new_theta - theta) < tolerance:
+            break
+
+        theta = new_theta
+
+    return theta
 
 
 def questionare(request):
@@ -200,26 +234,25 @@ def questionare(request):
     selected_questions = random.sample(questions_data, 15)
 
     if request.method == 'POST':
-        # 用户提交的答案
+        # 获取用户提交的答案
         user_answers = request.POST.getlist('answers')  # 假设用户答案的名称是 'answers'
 
+        # 使用 EM 算法计算用户的可信度
+        credibility = em_algorithm(selected_questions, user_answers)
 
-        correct_answers_count = 0
-        for i, question in enumerate(selected_questions):
-            if user_answers[i] == question['answer']:
-                correct_answers_count += 1
+        # 保存可信度到 Expert 模型中
+        if request.user.is_authenticated:
+            normal_user = request.user
+            ownername = NormalUser.objects.get(name=normal_user)
+            try:
+                expert = Expert.objects.get(owner=ownername)
+                expert.credibility = credibility  # 更新可信度
+                expert.save()
+            except Expert.DoesNotExist:
+                pass  # 如果专家记录不存在，则忽略
 
 
-        credibility = correct_answers_count / len(selected_questions)
-
-        return render(request, 'knowledge/credibility_result.html', {'credibility': credibility})
+        return redirect('expert_dashboard')
 
     # 渲染问题页面
     return render(request, 'knowledge/questionare.html', {'questions': selected_questions})
-
-def credibility_result(request):
-    # 获取可信度（从 URL 参数中获取）
-    credibility = request.GET.get('credibility', None)
-    if credibility is not None:
-        credibility = float(credibility)
-    return render(request, 'knowledge/credibility_result.html', {'credibility': credibility})

@@ -10,7 +10,5 @@ urlpatterns = [
     path('inquirer_dashboard/', views.inquirer_dashboard, name='inquirer_dashboard'),
     path('questionare/', views.questionare, name='questionare'),  # 显示问题页面
 
-    # 可信度结果页面
-    path('credibility_result/', views.credibility_result, name='credibility_result'),  # 显示可信度结果
 ]
 
