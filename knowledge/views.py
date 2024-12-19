@@ -180,6 +180,20 @@ def category_list(request):
     return render(request, "category_list.html", {"categories": categories})
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 from django.shortcuts import render, redirect
 import json
 import random
