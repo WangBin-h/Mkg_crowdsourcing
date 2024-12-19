@@ -1,24 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Questionnaire</title>
+    <title>问卷调查</title>
     <style>
-        .question-container {
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .questionnaire {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .question {
             margin-bottom: 20px;
         }
-        .question-container label {
-            font-weight: bold;
+        .question label {
+            font-size: 18px;
         }
-        .question-container input {
+        .question textarea {
             width: 100%;
-            padding: 10px;
+            height: 100px;
             margin-top: 5px;
-            border: 1px solid #ccc;
+            padding: 10px;
+            border: 1px solid #ddd;
             border-radius: 4px;
         }
-        .submit-button {
+        .submit-btn {
             padding: 10px 20px;
             background-color: #4CAF50;
             color: white;
@@ -26,21 +35,27 @@
             border-radius: 4px;
             cursor: pointer;
         }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
 
-<h2>专家问卷调查</h2>
-<form method="post">
-    {% csrf_token %}
-    {% for question in questions %}
-    <div class="question-container">
-        <label for="question{{ forloop.counter }}">{{ question.question }}</label>
-        <input type="text" id="question{{ forloop.counter }}" name="answers" placeholder="请输入答案" required>
-    </div>
-    {% endfor %}
-    <button type="submit" class="submit-button">提交问卷</button>
-</form>
+<div class="questionnaire">
+    <h2>问卷调查</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {% for question in questions %}
+            <div class="question">
+                <label for="question_{{ forloop.counter }}">{{ question.question }}</label>
+                <textarea name="answers" id="question_{{ forloop.counter }}" placeholder="请输入你的答案..."></textarea>
+            </div>
+        {% endfor %}
+        
+        <button type="submit" class="submit-btn">提交</button>
+    </form>
+</div>
 
 </body>
 </html>

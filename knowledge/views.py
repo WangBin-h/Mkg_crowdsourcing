@@ -180,83 +180,46 @@ def category_list(request):
     return render(request, "category_list.html", {"categories": categories})
 
 
-import random
+
+
+
+
+
 import json
-import numpy as np
+import random
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .models import Expert
+from django.http import JsonResponse
 
 
-# 读取JSON文件
-def load_json_file(file_path):
-    with open(file_path, 'r', encoding='utf-8') as f:
-        return json.load(f)
-
-
-# 简单的EM算法实现，计算专家的信誉度
-def em_algorithm(answers, correct_answers, max_iter=100, epsilon=1e-4):
-    """
-    使用EM算法估计专家的信誉度
-    :param answers: 用户提供的答案列表
-    :param correct_answers: 正确答案列表
-    :param max_iter: 最大迭代次数
-    :param epsilon: 收敛阈值
-    :return: 估计的信誉度
-    """
-    # 初始化信誉度为0.5
-    credibility = 0.5
-
-    for iteration in range(max_iter):
-        # E-step: 计算专家答案的正确性概率
-        correct_probabilities = []
-        for i, answer in enumerate(answers):
-            correct_answer = correct_answers[i]
-            # 根据当前的信誉度计算回答正确的概率
-            correctness_prob = credibility if answer == correct_answer else (1 - credibility)
-            correct_probabilities.append(correctness_prob)
-
-        # M-step: 更新信誉度，基于所有问题的正确性概率
-        # 信誉度是所有正确答案概率的平均值
-        credibility = np.mean(correct_probabilities)
-
-        # 判断是否收敛
-        if np.abs(credibility - np.mean(correct_probabilities)) < epsilon:
-            break
-
-    return credibility
-
-
-# 问卷页面
-@login_required
 def questionare(request):
-    # 判断用户是否为专家且尚未完成问卷
-    try:
-        expert = Expert.objects.get(owner=request.user.normaluser)
-        if expert.questionare_done:  # 如果问卷已完成，直接跳转到专家仪表盘
-            return redirect('expert_dashboard')
-    except Expert.DoesNotExist:
-        return redirect('inquirer_dashboard')  # 如果不是专家，跳转到提问者仪表盘
-
-    # 从 JSON 文件中加载问题数据
-    question_data = load_json_file(r'C:\Users\86131\Desktop\question.json')
+    # 读取问题 JSON 文件
+    with open(r"C:\Users\86131\Desktop\question.json", "r", encoding="utf-8") as file:
+        questions_data = json.load(file)
 
     # 随机抽取 15 个问题
-    questions = random.sample(question_data, 15)
-    correct_answers = [question['answer'] for question in questions]  # 收集正确答案
+    selected_questions = random.sample(questions_data, 15)
 
     if request.method == 'POST':
-        answers = request.POST.getlist('answers')  # 获取用户的所有回答
+        # 用户提交的答案
+        user_answers = request.POST.getlist('answers')  # 假设用户答案的名称是 'answers'
 
-        # 使用EM算法计算信誉度
-        updated_credibility = em_algorithm(answers, correct_answers)
 
-        # 更新专家的信誉度
-        expert.credibility = updated_credibility
-        expert.questionare_done = True  # 修改字段名为 questionare_done
-        expert.save()
+        correct_answers_count = 0
+        for i, question in enumerate(selected_questions):
+            if user_answers[i] == question['answer']:
+                correct_answers_count += 1
 
-        # 问卷提交后跳转到专家仪表盘
-        return redirect('expert_dashboard')
 
-    return render(request, 'questionare.html', {'questions': questions})
+        credibility = correct_answers_count / len(selected_questions)
+
+        return render(request, 'knowledge/credibility_result.html', {'credibility': credibility})
+
+    # 渲染问题页面
+    return render(request, 'knowledge/questionare.html', {'questions': selected_questions})
+
+def credibility_result(request):
+    # 获取可信度（从 URL 参数中获取）
+    credibility = request.GET.get('credibility', None)
+    if credibility is not None:
+        credibility = float(credibility)
+    return render(request, 'knowledge/credibility_result.html', {'credibility': credibility})
