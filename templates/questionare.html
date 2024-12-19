@@ -1,98 +1,46 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>问答表单</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    .question-container {
-      margin-bottom: 20px;
-    }
-    .question-container h3 {
-      margin: 0 0 10px;
-    }
-    .question-container input[type="text"] {
-      width: 80%;
-      padding: 8px;
-      font-size: 16px;
-    }
-    .action-buttons {
-      margin-top: 20px;
-    }
-    .action-buttons button {
-      padding: 8px 16px;
-      font-size: 16px;
-      margin-right: 10px;
-    }
-    .submit-btn {
-      background-color: #5bc0de;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire</title>
+    <style>
+        .question-container {
+            margin-bottom: 20px;
+        }
+        .question-container label {
+            font-weight: bold;
+        }
+        .question-container input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .submit-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
-<h1>问答表单 - 15个问题</h1>
-
-<div id="questions-container">
-  <!-- 这里会动态加载问题 -->
-  {% for question in questions %}
+<h2>专家问卷调查</h2>
+<form method="post">
+    {% csrf_token %}
+    {% for question in questions %}
     <div class="question-container">
-      <h3>问题: {{ forloop.counter }}: {{ question.question }}</h3>
-      <input type="text" placeholder="请输入答案" id="answer-{{ forloop.counter0 }}">
-      <!-- 保存正确答案 (这里只是为了演示，实际应用时可以通过前端验证) -->
-      <input type="hidden" id="correct-answer-{{ forloop.counter0 }}" value="{{ question.answer }}">
+        <label for="question{{ forloop.counter }}">{{ question.question }}</label>
+        <input type="text" id="question{{ forloop.counter }}" name="answers" placeholder="请输入答案" required>
     </div>
-  {% endfor %}
-</div>
-
-<div class="action-buttons" style="display: none;">
-  <button class="submit-btn" onclick="submitAnswers()">提交</button>
-</div>
-
-<script>
-  // 提交答案的函数
-  function submitAnswers() {
-    let allAnswered = true;
-    let correctCount = 0;
-    const totalQuestions = 15;
-    const answers = [];
-
-    // 获取所有输入框的答案
-    for (let i = 0; i < totalQuestions; i++) {
-      const answerInput = document.getElementById(`answer-${i}`);
-      const correctAnswer = document.getElementById(`correct-answer-${i}`).value;
-      const userAnswer = answerInput.value;
-
-      if (!userAnswer) {
-        allAnswered = false;
-        break;
-      }
-
-      answers.push({
-        question: `问题 ${i + 1}`,
-        userAnswer: userAnswer,
-        correctAnswer: correctAnswer,
-        isCorrect: userAnswer === correctAnswer  // 判断是否正确
-      });
-
-      if (userAnswer === correctAnswer) {
-        correctCount++;
-      }
-    }
-
-    if (allAnswered) {
-      const score = (correctCount / totalQuestions) * 100;
-      alert(`您已提交所有问题！得分：${score.toFixed(2)}% (${correctCount} / ${totalQuestions})`);
-      console.log("提交的答案：", answers);
-    } else {
-      alert("请确保所有问题都已回答！");
-    }
-  }
-</script>
+    {% endfor %}
+    <button type="submit" class="submit-button">提交问卷</button>
+</form>
 
 </body>
 </html>

@@ -43,3 +43,5 @@ class Expert(models.Model):
     arrive_time = models.DateTimeField(default=timezone.now)
     leave_time = models.DateTimeField(default=default_leave_time)  # 使用普通函数作为默认值
     credibility = models.CharField(max_length=100, default="0.5")
+    questionare_done = models.BooleanField(default=False)
+
