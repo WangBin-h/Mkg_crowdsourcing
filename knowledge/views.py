@@ -197,7 +197,7 @@ def category_list(request):
 from django.shortcuts import render, redirect
 import json
 import random
-
+import os
 
 def em_algorithm(questions, user_answers, max_iter=10, tolerance=1e-4):
 
@@ -240,8 +240,14 @@ def em_algorithm(questions, user_answers, max_iter=10, tolerance=1e-4):
 
 
 def questionare(request):
-    # 读取问题 JSON 文件
-    with open(r"C:\Users\86131\Desktop\question.json", "r", encoding="utf-8") as file:
+    # 获取当前脚本所在目录
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # 构造 question.json 文件的路径
+    file_path = os.path.join(current_dir, "question.json")
+
+    # 读取文件内容
+    with open(file_path, "r", encoding="utf-8") as file:
         questions_data = json.load(file)
 
     # 随机抽取 15 个问题
