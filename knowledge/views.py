@@ -133,6 +133,9 @@ def submit_answer(request):
 
         return redirect('expert_dashboard')  # 跳转到专家页面
     
+def test_graph_view(request):
+    graph_data = get_graph_data()
+    return JsonResponse(graph_data, safe=False)
     
 def medical_org_detail(request, org_id):
     """
