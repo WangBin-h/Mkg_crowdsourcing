@@ -15,3 +15,5 @@ db copy.sqlite3
 knowledge/management/commands/__pycache__/*.pyc
 knowledge/migrations/*.py
 question.json
+datebase/ZJ-medicalorg
+datebase/acgn.entities.final_with_at_id
