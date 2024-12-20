@@ -27,12 +27,14 @@
 		<div class="row ">
 			<div class="col-md-4">
 				<div class="card left-card-1">
-				<h5>待回答问题</h5>
+					<h5>待回答问题</h5>
 					<ul class="list-group">
-						{% for question in pending_questions %}
+						{% for question in assigned_questions %}
 							<li class="list-group-item" data-id="{{ question.id }}" onclick="loadQuestionDetails({{ question.id }})">
 								{{ question.title }}
 							</li>
+						{% empty %}
+							<li class="list-group-item">没有待回答的问题。</li>
 						{% endfor %}
 					</ul>
 				</div>
@@ -43,8 +45,8 @@
 				<div class="card right-card-1">
 					<h5>问题详情</h5>
 					<div id="question-details">
-						<p> 问题标题:  {{ question.title }}</p>
-						<p> 问题描述:  {{ question.description }}</p>
+						<p> 问题标题:  </p>
+						<p> 问题描述:  </p>
 					</div>
 		
 					<!-- 回答框 -->
@@ -52,6 +54,8 @@
 						<h6>回答问题</h6>
 						<form method="POST" action="{% url 'submit_answer' %}">
 							{% csrf_token %}
+							<!-- 隐藏字段，传递问题ID -->
+							<input type="hidden" name="question_id" value="{{ question.id }}">
 							<textarea name="answer" class="form-control" rows="5" placeholder="请输入您的答案" required></textarea>
 							<button type="submit" class="btn btn-primary mt-2">提交答案</button>
 						</form>
@@ -61,4 +65,28 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+    // 使用Ajax加载问题详情
+    function loadQuestionDetails(questionId) {
+        // 向后台请求问题的详细信息
+        fetch(`/question/details/${questionId}/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('问题加载失败');
+                } else {
+                    // 更新问题信息框
+                    document.querySelector('#question-details').innerHTML = `
+                        <p> 问题标题: ${data.title}</p>
+                        <p> 问题描述: ${data.description}</p>
+                    `;
+                    // 可以根据需要，填充回答框或其他信息
+                }
+            })
+            .catch(error => {
+                console.error('加载问题详情失败:', error);
+                alert('加载问题详情失败');
+            });
+    }
+</script>
 </html>
