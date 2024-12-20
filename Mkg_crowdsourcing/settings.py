@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'knowledge',  # Add your app here
+	# 'knowledge',  # Add your app here
+    'knowledge.apps.KnowledgeConfig',
 ]
 
 MIDDLEWARE = [
@@ -131,3 +132,5 @@ REDIS_DB = 0
 
 # RedisGraph 配置
 REDIS_GRAPH_NAME = 'medical_graph'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

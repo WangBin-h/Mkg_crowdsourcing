@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>问卷调查</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .questionnaire {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question label {
+            font-size: 18px;
+        }
+        .question textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 5px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .submit-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="questionnaire">
+    <h2>问卷调查</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {% for question in questions %}
+            <div class="question">
+                <label for="question_{{ forloop.counter }}">{{ question.question }}</label>
+                <textarea name="answers" id="question_{{ forloop.counter }}" placeholder="请输入你的答案..."></textarea>
+            </div>
+        {% endfor %}
+        
+        <button type="submit" class="submit-btn">提交</button>
+    </form>
+</div>
+
+</body>
+</html>
