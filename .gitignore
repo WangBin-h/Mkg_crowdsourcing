@@ -7,3 +7,9 @@ static/css/accounting.css
 experts.json
 tasks.json
 db.sqlite3
+knowledge/migrations/*.py
+dateup.py
+ZJMedicalOrg.json
+DTA_analysis6.py
+db copy.sqlite3
+knowledge/management/commands/__pycache__/*.pyc
