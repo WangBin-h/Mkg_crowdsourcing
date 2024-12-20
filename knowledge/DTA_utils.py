@@ -2,6 +2,8 @@ import random
 from datetime import timedelta
 from django.utils import timezone
 from .models import Question, Expert
+from django.db.models import Avg
+
 
 class DTAAlgorithm:
 	def __init__(self, method):

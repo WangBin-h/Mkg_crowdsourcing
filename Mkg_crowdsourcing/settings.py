@@ -132,3 +132,5 @@ REDIS_DB = 0
 
 # RedisGraph 配置
 REDIS_GRAPH_NAME = 'medical_graph'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
