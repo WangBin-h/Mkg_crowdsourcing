@@ -14,3 +14,4 @@ DTA_analysis6.py
 db copy.sqlite3
 knowledge/management/commands/__pycache__/*.pyc
 knowledge/migrations/*.py
+question.json
