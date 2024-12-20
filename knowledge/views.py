@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.conf import settings
 
 from knowledge.models import NormalUser, Asker, Expert, Question
 from .redis_utils import get_medical_org_by_id, get_medical_orgs_by_category, get_graph_data
@@ -127,7 +128,11 @@ def login_in(request):
 
                 # 根据用户类型跳转到不同的页面
                 if normal_user.user_type == 'expert':
-                    return redirect('../expert_dashboard/')  # 跳转到专家页面
+                    expert = Expert.objects.get(owner=normal_user)
+                    if not expert.questionare_done:
+                        return redirect('../questionare/')
+                    else:
+                        return redirect('../expert_dashboard/')  # 跳转到专家页面
                 elif normal_user.user_type == 'inquirer':
                     return redirect('../inquirer_dashboard/')  # 跳转到提问者页面
             else:
@@ -292,11 +297,9 @@ def em_algorithm(questions, user_answers, max_iter=10, tolerance=1e-4):
 
 
 def questionare(request):
-    # 获取当前脚本所在目录
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-
+    
     # 构造 question.json 文件的路径
-    file_path = os.path.join(current_dir, "question.json")
+    file_path = os.path.join(settings.BASE_DIR, "question.json")
 
     # 读取文件内容
     with open(file_path, "r", encoding="utf-8") as file:
